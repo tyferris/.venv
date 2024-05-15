@@ -35,7 +35,7 @@ while run:
     # Super important, colors over past frames
     screen.fill("black")
 
-    Background(image)       
+    Background(image)       # lemme commit
 
     # Introduce game objects in game here
     for item in items:
