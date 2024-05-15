@@ -3,6 +3,7 @@ import sys
 
 # Starts the game
 pygame.init()
+pygame.display.set_caption('Post.com')
 FPS = 10
 fpsClock = pygame.time.Clock()
 
