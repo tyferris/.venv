@@ -3,8 +3,8 @@ import sys
 
 # Starts the game
 pygame.init()
-FPS = 10
-fpsClock = pygame.time.Clock()
+pygame.display.set_caption('Post.com')
+clock = pygame.time.Clock()
 
 # Screen bounds
 SCREEN_WIDTH = 1000
@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Initialize game objects here
 active_item = None
-items = []       # x,  y, width, height
+items = []  # Rects for items
 item_positions = [(890, 35), (890, 149), (890, 262), (890, 376), (890, 490)]
 
 # Load custom images and resize them
@@ -23,48 +23,68 @@ for i in range(1, 6):
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     item_images.append(img)
 
-# Create Rect objects for items
+bag_animation_images = []
+for i in range(21, 24):
+    img = pygame.image.load(f"bague-{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
+    bag_animation_images.append(img)
+
+# Create Rect objects for items and store initial positions
+initial_item_positions = []
 for i, pos in enumerate(item_positions):
     item_rect = item_images[i].get_rect(topleft=pos)
     items.append(item_rect)
+    initial_item_positions.append(pos)  # Store the initial positions
 
-# background image
+# Background image
 image_background = pygame.image.load("backgroundwithpanel-01.png")
 
-# turns the blank background into the selected image
-def Background(image):
+# Function to draw the background
+def draw_background(image):
     size = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(size, (0, 0))
+
+# Function to animate frames
+def animate(frames, pos):
+    for frame in frames:
+        draw_background(image_background)
+        for item in items:
+            screen.blit(item_images[items.index(item)], item)
+        screen.blit(frame, pos)
+        pygame.display.flip()
+        pygame.time.delay(100)  # Delay in milliseconds
 
 # Game Loop
 run = True
 while run:
+    clock.tick(60)  # Set to 60 FPS
 
-    # Super important, colors over past frames
-    #screen.fill("black")
-
-    Background(image_background)
+    draw_background(image_background)
 
     # Introduce game objects in game here
     for item in items:
         screen.blit(item_images[items.index(item)], item)
 
     # Event Handler
-    # Add controls here
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:   #left mouse button
+            if event.button == 1:  # Left mouse button
                 for num, item in enumerate(items):
                     if item.collidepoint(event.pos):
-                        active_item = num   # If click on item, it active.
+                        active_item = num  # If click on item, it is active.
 
         if event.type == pygame.MOUSEBUTTONUP:
-            if event.button ==1:
-                active_item = None  #no more click, no more active
+            if event.button == 1:
+                if active_item is not None and active_item == 2:  # Specific check for item 3 (index 2)
+                    pos = items[active_item].topleft
+                    # Reset item to its initial position
+                    items[active_item].topleft = initial_item_positions[active_item]
+                    animate(bag_animation_images, pos)
+                active_item = None  # No more click, no more active
 
-        if event.type == pygame.MOUSEMOTION:    # If mouse moves...
+        if event.type == pygame.MOUSEMOTION:  # If mouse moves...
             if active_item is not None:
-                items[active_item].move_ip(event.rel)   #active item follows it
+                items[active_item].move_ip(event.rel)  # Active item follows it
 
         if event.type == pygame.QUIT:
             run = False
@@ -73,3 +93,4 @@ while run:
 
 # Close the game
 pygame.quit()
+sys.exit()
