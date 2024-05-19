@@ -1,10 +1,33 @@
 import pygame
 import sys
 
+class Animation:
+    def __init__(self, frames, pos, frame_delay):
+        self.frames = frames
+        self.pos = pos
+        self.frame_delay = frame_delay  # Milliseconds between frames
+        self.current_frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.done = False
+
+    def update(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_delay:
+            self.last_update = now
+            self.current_frame += 1
+            if self.current_frame >= len(self.frames):
+                self.current_frame = 0
+                self.done = True
+
+    def draw(self, screen):
+        if not self.done:
+            screen.blit(self.frames[self.current_frame], self.pos)
+
 # Starts the game
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
+animation_delay_ms = 1000
 
 # Screen bounds
 SCREEN_WIDTH = 1000
@@ -13,7 +36,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Initialize game objects here
 active_item = None
-items = []  # Rects for items
+items = []  # x, y, width, height
 item_positions = [(890, 35), (890, 149), (890, 262), (890, 376), (890, 490)]
 
 # Load custom images and resize them
@@ -44,15 +67,8 @@ def draw_background(image):
     size = pygame.transform.scale(image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     screen.blit(size, (0, 0))
 
-# Function to animate frames
-def animate(frames, pos):
-    for frame in frames:
-        draw_background(image_background)
-        for item in items:
-            screen.blit(item_images[items.index(item)], item)
-        screen.blit(frame, pos)
-        pygame.display.flip()
-        pygame.time.delay(100)  # Delay in milliseconds
+# List to keep track of animations
+animations = []
 
 # Game Loop
 run = True
@@ -64,6 +80,14 @@ while run:
     # Introduce game objects in game here
     for item in items:
         screen.blit(item_images[items.index(item)], item)
+
+    # Update and draw animations
+    for animation in animations:
+        animation.update()
+        animation.draw(screen)
+    
+    # Remove finished animations
+    animations = [anim for anim in animations if not anim.done]
 
     # Event Handler
     for event in pygame.event.get():
@@ -79,7 +103,8 @@ while run:
                     pos = items[active_item].topleft
                     # Reset item to its initial position
                     items[active_item].topleft = initial_item_positions[active_item]
-                    animate(bag_animation_images, pos)
+                    # Add a new animation
+                    animations.append(Animation(bag_animation_images, pos, animation_delay_ms))  # ms delay between frames
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
