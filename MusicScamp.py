@@ -4,6 +4,8 @@ import random
 
 s = Session()
 n = s.new_part("Cello")
+# n = s.new_part("Bagpipe")
+# n = s.new_part("Flute")
 n.set_max_pitch_bend(100)
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 
@@ -52,6 +54,11 @@ def jump (start, end, time):
 def degrade (start, end, time, function):
     pitches = function(start, end, time) #allows different functions to work in code
     n.play_note(pitches, 0.6, time)
+
+def degrade_list (start, end, time, function):
+    pitches = function(start, end, time)
+    for pitch in pitches:
+        n.play_note(pitch, 0.6, (time/len(pitches)))
 
 def bass (pitch, time):
     n.play_note(pitch, cresc, time)
@@ -102,15 +109,15 @@ def demo4 ():
     s.fork(degrade,args=(79, 50, 30, tenuto))
     s.fork(degrade,args=(76, 50, 30, tenuto))
     s.fork(degrade,args=(72, 50, 30, tenuto))
-    # bass(50,5) # minor
-    # s.fork(degrade,args=(89, 50, 10, osci))
-    # s.fork(degrade,args=(85, 50, 10, osci))
-    # s.fork(degrade,args=(82, 50, 10, osci))
-    # bass(50,5) # 7th
-    # s.fork(degrade,args=(92, 50, 10, tenuto))
-    # s.fork(degrade,args=(89, 50, 10, tenuto))
-    # s.fork(degrade,args=(86, 50, 10, tenuto))
-    # s.fork(degrade,args=(82, 50, 10, tenuto))
+    bass(50,5) # minor
+    s.fork(degrade,args=(89, 50, 10, osci))
+    s.fork(degrade,args=(85, 50, 10, osci))
+    s.fork(degrade,args=(82, 50, 10, osci))
+    bass(50,5) # 7th
+    s.fork(degrade,args=(92, 50, 10, tenuto))
+    s.fork(degrade,args=(89, 50, 10, tenuto))
+    s.fork(degrade,args=(86, 50, 10, tenuto))
+    s.fork(degrade,args=(82, 50, 10, tenuto))
     bass(50,100)
 
 def note1 (animation_frame):
@@ -119,7 +126,7 @@ def note1 (animation_frame):
     b = s.new_part("Bird")
 
     s.fork(b.play_note,args=(70, 0.5, 10))
-    s.fork(degrade,args=(start, end, 10, tenuto))
+    s.fork(degrade_list,args=(start, end, 10, tenuto)) # swap between degrade_list and degrade
     s.fork(bass,args=[50,10])
     s.wait(10)
 
