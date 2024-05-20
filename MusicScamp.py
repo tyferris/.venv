@@ -3,7 +3,7 @@ from math import *
 import random
 
 s = Session()
-n = s.new_part("Bagpipe")
+n = s.new_part("Cello")
 n.set_max_pitch_bend(100)
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 
@@ -51,10 +51,10 @@ def jump (start, end, time):
 
 def degrade (start, end, time, function):
     pitches = function(start, end, time) #allows different functions to work in code
-    n.play_note(pitches, 0.6, time, None, False)
+    n.play_note(pitches, 0.6, time)
 
 def bass (pitch, time):
-    n.play_note(pitch, cresc, time, None, False)
+    n.play_note(pitch, cresc, time)
 
 def demo0 ():
     bass(50,3)
@@ -116,7 +116,10 @@ def demo4 ():
 def note1 (animation_frame):
     start = 70 - (5*(animation_frame-1)) # indexing starts at 1
     end = 70 - (5*(animation_frame)) # indexing starts at 1
-    s.fork(degrade,args=(start, end, 10, chrom))
+    b = s.new_part("Bird")
+
+    s.fork(b.play_note,args=(70, 0.5, 10))
+    s.fork(degrade,args=(start, end, 10, tenuto))
     s.fork(bass,args=[50,10])
     s.wait(10)
 
