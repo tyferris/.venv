@@ -73,6 +73,7 @@ animations = []
 
 # Game Loop
 run = True
+i = 0
 while run:
     clock.tick(60)  # Set to 60 FPS
 
@@ -84,6 +85,11 @@ while run:
 
     # Update and draw animations
     for animation in animations:
+        if(i < 4):
+            i+=1
+        else:
+            i=1
+        MusicScamp.note1(i)
         animation.update()
         animation.draw(screen)
     

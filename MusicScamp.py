@@ -1,5 +1,6 @@
 from scamp import *
 from math import *
+import random
 
 s = Session()
 n = s.new_part("Bagpipe")
@@ -111,6 +112,12 @@ def demo4 ():
     # s.fork(degrade,args=(86, 50, 10, tenuto))
     # s.fork(degrade,args=(82, 50, 10, tenuto))
     bass(50,100)
+
+def note1 (animation_frame):
+    start = 70 - (5*(animation_frame-1)) # indexing starts at 1
+    end = 70 - (5*(animation_frame)) # indexing starts at 1
+    s.fork(degrade,args=(start, end, 10, osci))
+    bass(50,10)
 
 # demo0()
 # demo1()
