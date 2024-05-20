@@ -6,15 +6,17 @@ class obj (pygame.sprite.Sprite):
     def __init__(self, pos_x , pos_y):
         super().__init__()
         self.sprites = []
-        self.sprites.append(pygame.image.load('testObj.png'))
+        self.sprites.append(pygame.image.load('testObj.png')) # test: can delete
         self.sprites.append(pygame.image.load('trash1.png')) #single move
         self.sprites.append(pygame.image.load('trash2.png'))
         self.sprites.append(pygame.image.load('trash3.png'))
         self.sprites.append(pygame.image.load('trash4.png'))
+        
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
         # self.image = pygame.Surface([20,20])
         # self.image.fill((255,255,255))
+
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x , pos_y]
     def update(self):
@@ -45,4 +47,4 @@ while True:
     moving_sprites.draw(screen)
     moving_sprites.update()
     pygame.display.flip()
-    clock.tick(1000)
+    clock.tick(1000) #FPS
