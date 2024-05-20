@@ -6,11 +6,10 @@ class obj (pygame.sprite.Sprite):
     def __init__(self, pos_x , pos_y):
         super().__init__()
         self.sprites = []
-        self.sprites.append(pygame.image.load('testObj.png')) # test: can delete
-        self.sprites.append(pygame.image.load('trash1.png')) #single move
-        self.sprites.append(pygame.image.load('trash2.png'))
-        self.sprites.append(pygame.image.load('trash3.png'))
-        self.sprites.append(pygame.image.load('trash4.png'))
+        self.sprites.append(pygame.image.load('trash11.png')) #single move
+        self.sprites.append(pygame.image.load('trash21.png'))
+        self.sprites.append(pygame.image.load('trash31.png'))
+        self.sprites.append(pygame.image.load('trash41.png'))
         
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
@@ -28,8 +27,8 @@ class obj (pygame.sprite.Sprite):
 pygame.init()
 clock = pygame.time.Clock()
 
-screen_width = 400
-screen_height = 400
+screen_width = 1000
+screen_height = 1000
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("TEST")
 
@@ -47,4 +46,4 @@ while True:
     moving_sprites.draw(screen)
     moving_sprites.update()
     pygame.display.flip()
-    clock.tick(1000) #FPS
+    clock.tick(1) #FPS
