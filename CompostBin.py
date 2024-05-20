@@ -47,7 +47,7 @@ for i in range(1, 6):
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(21, 24):
+for i in range(21, 26):
     img = pygame.image.load(f"bague-{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
