@@ -27,8 +27,8 @@ class obj (pygame.sprite.Sprite):
 pygame.init()
 clock = pygame.time.Clock()
 
-screen_width = 1000
-screen_height = 1000
+screen_width = 700
+screen_height = 700
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("TEST")
 
