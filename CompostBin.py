@@ -1,4 +1,5 @@
 import pygame
+import MusicScamp
 import sys
 
 class Animation:
@@ -47,8 +48,8 @@ for i in range(1, 6):
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(21, 24):
-    img = pygame.image.load(f"bague-{i}.png").convert_alpha()
+for i in range(1, 5):
+    img = pygame.image.load(f"trash{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
@@ -72,6 +73,7 @@ animations = []
 
 # Game Loop
 run = True
+i = 0
 while run:
     clock.tick(60)  # Set to 60 FPS
 
@@ -83,6 +85,11 @@ while run:
 
     # Update and draw animations
     for animation in animations:
+        if(i < 4):
+            i+=1
+        else:
+            i=1
+        MusicScamp.note1(i)
         animation.update()
         animation.draw(screen)
     
