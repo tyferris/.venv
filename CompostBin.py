@@ -1,10 +1,10 @@
 import pygame
 import MusicScamp
-# import pythread
 import sys
 
 class Animation:
     def __init__(self, frames, pos, frame_delay):
+        MusicScamp.trash_bag_sound(round(animation_delay_ms/260)) # will need to base off the object later
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -29,7 +29,8 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 1000
+animation_delay_ms = 2000 # 1 scamp beat ~ 260 frames
+MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
 
 # Screen bounds
 SCREEN_WIDTH = 1000
@@ -74,10 +75,8 @@ animations = []
 
 # Game Loop
 run = True
-i = 0
 while run:
     clock.tick(60)  # Set to 60 FPS
-
     draw_background(image_background)
 
     # Introduce game objects in game here
@@ -85,12 +84,7 @@ while run:
         screen.blit(item_images[items.index(item)], item)
 
     # Update and draw animations
-    for animation in animations:
-        if(i < 4):
-            i+=1
-        else:
-            i=1
-        MusicScamp.note1(i)
+    for animation in animations:           
         animation.update()
         animation.draw(screen)
     
