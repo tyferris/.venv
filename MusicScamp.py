@@ -1,7 +1,7 @@
 from scamp import *
 from math import *
 import random
-import time
+
 s = Session().run_as_server()
 n = s.new_part("Cello")
 # n = s.new_part("Bagpipe")
