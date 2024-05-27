@@ -1,5 +1,6 @@
 import pygame
 import MusicScamp
+#import bague_files
 import sys
 
 class Animation:
@@ -50,8 +51,8 @@ for i in range(1, 6):
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(1, 5):
-    img = pygame.image.load(f"trash{i}.png").convert_alpha()
+for i in range(1, 6):
+    img = pygame.image.load(f"bague_files/bague{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
