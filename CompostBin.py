@@ -1,9 +1,11 @@
 import pygame
 import MusicScamp
+#import bague_files
 import sys
 
 class Animation:
     def __init__(self, frames, pos, frame_delay):
+        MusicScamp.trash_bag_sound(round(animation_delay_ms/260)) # will need to base off the object later
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -28,7 +30,8 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 1000
+animation_delay_ms = 2000 # 1 scamp beat ~ 260 frames
+MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
 
 # Screen bounds
 SCREEN_WIDTH = 1000
@@ -43,13 +46,13 @@ item_positions = [(890, 35), (890, 149), (890, 262), (890, 376), (890, 490)]
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
-    img = pygame.image.load(f"object-{i}.png").convert_alpha()
+    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(1, 5):
-    img = pygame.image.load(f"trash{i}.png").convert_alpha()
+for i in range(1, 6):
+    img = pygame.image.load(f"bague_files/bague{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
@@ -61,7 +64,7 @@ for i, pos in enumerate(item_positions):
     initial_item_positions.append(pos)  # Store the initial positions
 
 # Background image
-image_background = pygame.image.load("backgroundwithpanel-01.png")
+image_background = pygame.image.load("background_files/background_original.png")
 
 # Function to draw the background
 def draw_background(image):
@@ -73,10 +76,8 @@ animations = []
 
 # Game Loop
 run = True
-i = 0
 while run:
     clock.tick(60)  # Set to 60 FPS
-
     draw_background(image_background)
 
     # Introduce game objects in game here
@@ -84,12 +85,7 @@ while run:
         screen.blit(item_images[items.index(item)], item)
 
     # Update and draw animations
-    for animation in animations:
-        if(i < 4):
-            i+=1
-        else:
-            i=1
-        MusicScamp.note1(i)
+    for animation in animations:           
         animation.update()
         animation.draw(screen)
     
