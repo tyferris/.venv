@@ -2,6 +2,17 @@ import pygame, sys
 
 # from pygame.sprite import Group
 
+# pause = False
+# for event in pygame.event.get():
+#     if event.type == pygame.KEYDOWN:
+#         # if event.key == pygame.K_ESCAPE:     
+#         if event.key == pygame.K_ESCAPE:
+#             if pause:
+#                 pause =False
+#             else:
+#                 pause = True
+
+running = True
 class obj (pygame.sprite.Sprite):
     def __init__(self, pos_x , pos_y):
         super().__init__()
@@ -24,6 +35,22 @@ class obj (pygame.sprite.Sprite):
             self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
 
+        key = pygame.key.get_pressed()
+        if key[pygame.K_p]:
+            self.pause()
+
+    def pause(self):
+        global running
+        isPause = True
+        while isPause:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        isPause = False
+                if event.type == pygame.QUIT:
+                    isPause = False
+                    running = False
+
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -36,7 +63,7 @@ moving_sprites = pygame.sprite.Group()
 obj1 = obj(100,100)
 moving_sprites.add(obj1)
 
-while True:
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
