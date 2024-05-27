@@ -1,5 +1,6 @@
 import pygame
 import MusicScamp
+#import bague_files
 import sys
 
 class Animation:
@@ -45,13 +46,13 @@ item_positions = [(890, 35), (890, 149), (890, 262), (890, 376), (890, 490)]
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
-    img = pygame.image.load(f"object-{i}.png").convert_alpha()
+    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(1, 5):
-    img = pygame.image.load(f"trash{i}.png").convert_alpha()
+for i in range(1, 6):
+    img = pygame.image.load(f"bague_files/bague{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
@@ -63,7 +64,7 @@ for i, pos in enumerate(item_positions):
     initial_item_positions.append(pos)  # Store the initial positions
 
 # Background image
-image_background = pygame.image.load("backgroundwithpanel-01.png")
+image_background = pygame.image.load("background_files/background_original.png")
 
 # Function to draw the background
 def draw_background(image):
