@@ -3,10 +3,12 @@ from math import *
 import random
 
 s = Session().run_as_server()
-n = s.new_part("Cello")
-# n = s.new_part("Bagpipe")
-# n = s.new_part("Flute")
-n.set_max_pitch_bend(100)
+n1 = s.new_part("Cello")
+n2 = s.new_part("Oboe")
+n3 = s.new_part("Flute")
+n1.set_max_pitch_bend(100)
+n2.set_max_pitch_bend(100)
+n3.set_max_pitch_bend(100)
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 
 def chrom (start, end, time):
@@ -83,19 +85,19 @@ def harm_func(note, end):
         return random(end+8, end +6)
     return 90
 
-def degrade_smooth (start, end, time, function):
+def degrade_smooth (start, end, time, function, part):
     pitches = function(start, end, time) #allows different functions to work in code
     print(function, pitches)
-    n.play_note(pitches, 0.6, time)
+    part.play_note(pitches, 0.6, time)
 
-def degrade_list (start, end, time, function):
+def degrade_list (start, end, time, function, part):
     pitches = function(start, end, time)
     print(function, pitches)
     for pitch in pitches:
-        n.play_note(pitch, 0.6, (time/len(pitches)))
+        part.play_note(pitch, 0.6, (time/len(pitches)))
 
 def bass (pitch, time):
-    n.play_note(pitch, 0.4, time)
+    n1.play_note(pitch, 0.5, time)
 
 def bass_inf (pitch):
     while True:
@@ -104,8 +106,9 @@ def bass_inf (pitch):
 def trash_bag_sound (time):
     b = s.new_part("Bird")
     s.fork(b.play_note,args=(70, 0.5, time))
+
     #note = random.randint(61,71)
-    s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto]))) # swap between list and smooth / differing functions
+    s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto]),random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
 
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]
