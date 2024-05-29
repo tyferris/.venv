@@ -31,7 +31,7 @@ pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
 animation_delay_ms = 400 # 1 scamp beat ~ 260 frames
-MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
+MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the bass tone
 
 # Screen bounds
 SCREEN_WIDTH = 1000
