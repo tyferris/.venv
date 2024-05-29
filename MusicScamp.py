@@ -34,7 +34,7 @@ def tenuto (start, end, time):
         returnable.append(p)
         returnable.append(p)
         p = p - step
-    # returnable.append(end)
+    returnable.append(end)
     # returnable.append(end)
     # returnable.append(end)
     return returnable
@@ -51,6 +51,38 @@ def jump (start, end, time):
     returnable.append(end)
     return returnable
 
+def harm (start, end, time):
+    returnable = []
+    p = round(start)
+    while p != end:
+        returnable.append(p)
+        p = harm_func(p, end)
+    returnable.append(end)
+    return returnable
+
+def harm_func(note, end):
+    print(type(note))
+    print(type(end))
+    degree = (note-end)%8
+    print (degree)
+    if degree == 0:
+        return end
+    if degree == 1:
+        return end
+    if degree == 2:
+        return random(end+1, end+3)
+    if degree == 3:
+        return end + 5
+    if degree == 4:
+        return random(end+3, end+5)
+    if degree == 5:
+        return end
+    if degree == 6:
+        return end + 5
+    if degree == 7:
+        return random(end+8, end +6)
+    return 90
+
 def degrade_smooth (start, end, time, function):
     pitches = function(start, end, time) #allows different functions to work in code
     print(function, pitches)
@@ -63,7 +95,7 @@ def degrade_list (start, end, time, function):
         n.play_note(pitch, 0.6, (time/len(pitches)))
 
 def bass (pitch, time):
-    n.play_note(pitch, cresc, time)
+    n.play_note(pitch, 0.4, time)
 
 def bass_inf (pitch):
     while True:
@@ -72,7 +104,8 @@ def bass_inf (pitch):
 def trash_bag_sound (time):
     b = s.new_part("Bird")
     s.fork(b.play_note,args=(70, 0.5, time))
-    s.fork(degrade_list,args=(60, 50, time, random_function([chrom, jump, osci, tenuto]))) # swap between list and smooth / differing functions
+    #note = random.randint(61,71)
+    s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto]))) # swap between list and smooth / differing functions
 
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]

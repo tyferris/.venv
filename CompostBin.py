@@ -5,7 +5,7 @@ import sys
 
 class Animation:
     def __init__(self, frames, pos, frame_delay):
-        MusicScamp.trash_bag_sound(round(animation_delay_ms/260)) # will need to base off the object later
+        MusicScamp.trash_bag_sound(round(animation_delay_ms/15.1)) # will need to base off the object later
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -30,7 +30,7 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 500 # 1 scamp beat ~ 260 frames
+animation_delay_ms = 400 # 1 scamp beat ~ 260 frames
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
 
 # Screen bounds
@@ -51,9 +51,9 @@ for i in range(1, 6):
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(1, 84):
+for i in range(1, 65):
     img = pygame.image.load(f"plasticbaggrain_files/plasticbaggrain_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
+    img = pygame.transform.scale(img, (600, 300))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
 # Create Rect objects for items and store initial positions
