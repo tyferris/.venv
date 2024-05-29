@@ -64,7 +64,7 @@ for i, pos in enumerate(item_positions):
     initial_item_positions.append(pos)  # Store the initial positions
 
 # Background image
-image_background = pygame.image.load("background_files/background_original.png")
+image_background = pygame.image.load("background_files/background_right.png")
 
 # Function to draw the background
 def draw_background(image):
