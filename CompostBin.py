@@ -1,10 +1,11 @@
+
 import pygame
 import MusicScamp
 import sys
 
 class Animation:
     def __init__(self, frames, pos, frame_delay):
-        MusicScamp.trash_bag_sound(round(animation_delay_ms/260)) # will need to base off the object later
+        MusicScamp.trash_bag_sound(round(frame_delay / 15.1))  # Assumes frame_delay is provided correctly
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -18,7 +19,6 @@ class Animation:
             self.last_update = now
             self.current_frame += 1
             if self.current_frame >= len(self.frames):
-                self.current_frame = 0
                 self.done = True
 
     def draw(self, screen):
@@ -29,8 +29,10 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 2000 # 1 scamp beat ~ 260 frames
-MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
+animation_delay_ms = 400  # 1 scamp beat ~ 260 frames
+
+# Initialize sound
+MusicScamp.s.fork(MusicScamp.bass_inf, args=[50])  # Plays the base tone
 
 # Screen bounds
 SCREEN_WIDTH = 1000
@@ -45,15 +47,25 @@ item_positions = [(890, 35), (890, 149), (890, 262), (890, 376), (890, 490)]
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
-    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
-    item_images.append(img)
+    try:
+        img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
+        img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
+        item_images.append(img)
+    except pygame.error as e:
+        print(f"Error loading image object-{i}.png: {e}")
+        sys.exit(1)
 
+# Load bag animation images
 bag_animation_images = []
-for i in range(1, 6):
-    img = pygame.image.load(f"bague_files/bague{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
-    bag_animation_images.append(img)
+for i in range(0, 65):
+    try:
+        img = pygame.image.load(f"plasticbaggrain_files/plasticbaggrain_{i}.png").convert_alpha()
+        img = pygame.transform.scale(img, (600, 300))  # Resize to match original rectangle size
+        bag_animation_images.append(img)
+        i = i + 2
+    except pygame.error as e:
+        print(f"Error loading image plasticbaggrain_{i}.png: {e}")
+        sys.exit(1)
 
 # Create Rect objects for items and store initial positions
 initial_item_positions = []
@@ -63,7 +75,11 @@ for i, pos in enumerate(item_positions):
     initial_item_positions.append(pos)  # Store the initial positions
 
 # Background image
-image_background = pygame.image.load("background_files/background_right.png")
+try:
+    image_background = pygame.image.load("background_files/background_original.png")
+except pygame.error as e:
+    print(f"Error loading background image: {e}")
+    sys.exit(1)
 
 # Function to draw the background
 def draw_background(image):
@@ -73,18 +89,22 @@ def draw_background(image):
 # List to keep track of animations
 animations = []
 
+# Offset values for manual placement adjustment
+offset_x = 10  # Adjust the x coordinate by 10 pixels
+offset_y = -20  # Adjust the y coordinate by -20 pixels
+
 # Game Loop
 run = True
 while run:
     clock.tick(60)  # Set to 60 FPS
     draw_background(image_background)
 
-    # Introduce game objects in game here
+    # Draw game items
     for item in items:
         screen.blit(item_images[items.index(item)], item)
 
     # Update and draw animations
-    for animation in animations:           
+    for animation in animations:
         animation.update()
         animation.draw(screen)
     
@@ -105,8 +125,13 @@ while run:
                     pos = items[active_item].topleft
                     # Reset item to its initial position
                     items[active_item].topleft = initial_item_positions[active_item]
+                    # Calculate the center position of the item
+                    item_center = items[active_item].center
+                    # Calculate the top-left position for the animation to center it on the item
+                    animation_pos = (item_center[0] - bag_animation_images[0].get_width() // 2 + offset_x,
+                                     item_center[1] - bag_animation_images[0].get_height() // 2 + offset_y)
                     # Add a new animation
-                    animations.append(Animation(bag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    animations.append(Animation(bag_animation_images, animation_pos, animation_delay_ms))  # ms delay between frames
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
