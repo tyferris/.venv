@@ -30,7 +30,7 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 2000 # 1 scamp beat ~ 260 frames
+animation_delay_ms = 500 # 1 scamp beat ~ 260 frames
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the base tone
 
 # Screen bounds
@@ -51,8 +51,8 @@ for i in range(1, 6):
     item_images.append(img)
 
 bag_animation_images = []
-for i in range(1, 6):
-    img = pygame.image.load(f"bague_files/bague{i}.png").convert_alpha()
+for i in range(1, 84):
+    img = pygame.image.load(f"plasticbaggrain_files/plasticbaggrain_{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (75, 75))  # Resize to match original rectangle size
     bag_animation_images.append(img)
 
