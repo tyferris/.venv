@@ -91,7 +91,7 @@ class MissingModule:
 # first, the "required" modules
 from pygame.base import *  # pylint: disable=wildcard-import; lgtm[py/polluting-import]
 from pygame.constants import *  # now has __all__ pylint: disable=wildcard-import; lgtm[py/polluting-import]
-# from pygame.version import *  # pylint: disable=wildcard-import; lgtm[py/polluting-import]
+from pygame.version import *  # pylint: disable=wildcard-import; lgtm[py/polluting-import]
 from pygame.rect import Rect
 from pygame.rwobject import encode_string, encode_file_path
 import pygame.surflock
@@ -106,7 +106,7 @@ import pygame.math
 Vector2 = pygame.math.Vector2
 Vector3 = pygame.math.Vector3
 
-__version__ = ver
+ver = version
 
 # next, the "standard" modules
 # we still allow them to be missing for stripped down pygame distributions
