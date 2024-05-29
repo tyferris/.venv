@@ -56,10 +56,22 @@ def jump (start, end, time):
 
 def harm (start, end, time):
     returnable = []
-    p = round(start)
+    p = start
     while p != end:
         returnable.append(p)
         p = random.randint(end, p+3)
+    returnable.append(end)
+    return returnable
+
+def bottle (start, end, time): #start = 62, end = 74
+    returnable = []
+    print(start, end)
+    p = start
+    i = 0
+    while i <= 3*time:
+        returnable.append(p)
+        p = random.randint(end, round(start-(i/6)))
+        i+=1
     returnable.append(end)
     return returnable
 
@@ -96,7 +108,7 @@ def degrade_list (start, end, time, function, part):
     pitches = function(start, end, time)
     print(function, pitches)
     for pitch in pitches:
-        part.play_note(pitch, 0.6, (time/len(pitches)))
+        part.play_note(pitch, 0.35, (time/len(pitches)))
 
 def bass (pitch, time):
     n1.play_note(pitch, cresc_small, time)
@@ -110,6 +122,10 @@ def trash_bag_sound (time):
     s.fork(b.play_note,args=(70, 0.5, time))
     #note = random.randint(61,71)
     s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto, harm]), random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
+
+def glass_bottle_sound (time):
+    b = s.new_part("Bird")
+    s.fork(degrade_list,args=(82, 62, time, bottle, n3)) # swap between list and smooth / differing functions
 
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]
