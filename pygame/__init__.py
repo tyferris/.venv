@@ -106,7 +106,7 @@ import pygame.math
 Vector2 = pygame.math.Vector2
 Vector3 = pygame.math.Vector3
 
-__version__ = ver
+ver = version
 
 # next, the "standard" modules
 # we still allow them to be missing for stripped down pygame distributions
