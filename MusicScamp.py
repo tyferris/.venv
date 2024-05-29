@@ -10,6 +10,7 @@ n1.set_max_pitch_bend(100)
 n2.set_max_pitch_bend(100)
 n3.set_max_pitch_bend(100)
 cresc = Envelope.from_levels([0.6,0.8,1.0])
+cresc_small = Envelope.from_levels([0.4,0.6,0.8])
 
 def chrom (start, end, time):
     step = ((start-end)/time)
@@ -97,7 +98,7 @@ def degrade_list (start, end, time, function, part):
         part.play_note(pitch, 0.6, (time/len(pitches)))
 
 def bass (pitch, time):
-    n1.play_note(pitch, 0.5, time)
+    n1.play_note(pitch, cresc_small, time)
 
 def bass_inf (pitch):
     while True:
@@ -106,7 +107,6 @@ def bass_inf (pitch):
 def trash_bag_sound (time):
     b = s.new_part("Bird")
     s.fork(b.play_note,args=(70, 0.5, time))
-
     #note = random.randint(61,71)
     s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto]),random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
 
