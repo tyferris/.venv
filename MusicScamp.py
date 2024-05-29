@@ -59,31 +59,32 @@ def harm (start, end, time):
     p = round(start)
     while p != end:
         returnable.append(p)
-        p = harm_func(p, end)
+        p = random.randint(end, p+3)
     returnable.append(end)
     return returnable
 
 def harm_func(note, end):
     print(type(note))
     print(type(end))
-    degree = (note-end)%8
-    print (degree)
-    if degree == 0:
-        return end
-    if degree == 1:
-        return end
-    if degree == 2:
-        return random(end+1, end+3)
-    if degree == 3:
-        return end + 5
-    if degree == 4:
-        return random(end+3, end+5)
-    if degree == 5:
-        return end
-    if degree == 6:
-        return end + 5
-    if degree == 7:
-        return random(end+8, end +6)
+    # degree = (note-end)%8
+    # print (degree)
+    # return random.randrange()
+    # if degree == 0:
+    #     return end
+    # if degree == 1:
+    #     return end
+    # if degree == 2:
+    #     return random(end+1, end+3)
+    # if degree == 3:
+    #     return end + 5
+    # if degree == 4:
+    #     return random(end+3, end+5)
+    # if degree == 5:
+    #     return end
+    # if degree == 6:
+    #     return end + 5
+    # if degree == 7:
+    #     return random(end+8, end +6)
     return 90
 
 def degrade_smooth (start, end, time, function, part):
@@ -108,7 +109,7 @@ def trash_bag_sound (time):
     b = s.new_part("Bird")
     s.fork(b.play_note,args=(70, 0.5, time))
     #note = random.randint(61,71)
-    s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto]),random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
+    s.fork(degrade_smooth,args=(70, 50, time, random_function([chrom, jump, osci, tenuto, harm]), random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
 
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]
