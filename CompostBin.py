@@ -1,6 +1,5 @@
 import pygame
 import MusicScamp
-#import bague_files
 import sys
 
 class Animation:
