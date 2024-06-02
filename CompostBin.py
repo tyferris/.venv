@@ -30,24 +30,24 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 400 # 1 scamp beat ~ 260 frames
+animation_delay_ms = 100 # 1 scamp beat ~ 260 frames
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the bass tone
 
 # Screen bounds
-SCREEN_WIDTH = 1440
-SCREEN_HEIGHT = 864
+SCREEN_WIDTH = 1410
+SCREEN_HEIGHT = 852
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Initialize game objects here
 active_item = None
 items = []  # x, y, width, height
-item_positions = [(1250, 60), (1250, 210), (1250, 360), (1250, 510), (1250, 660)]
+item_positions = [(1230, 50), (1230, 210), (1230, 370), (1230, 530), (1230, 690)]
 
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
-    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (108, 126))  # Resize to match original rectangle size
+    img = pygame.image.load(f"object_final_files/object-{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (96, 120))  # Resize to match original rectangle size
     item_images.append(img)
 
 bag_animation_images = []
