@@ -109,10 +109,10 @@ while run:
             if event.button == 1:
                 if active_item is not None and active_item == 2:  # Specific check for item 3 (index 2)
                     pos = items[active_item].topleft
-                    # Reset item to its initial position
-                    items[active_item].topleft = initial_item_positions[active_item]
                     # Calculate the center position of the item
                     item_center = items[active_item].center
+                    # Reset item to its initial position
+                    items[active_item].topleft = initial_item_positions[active_item]
                     # Calculate the top-left position for the animation to center it on the item
                     animation_pos = (item_center[0] - bag_animation_images[0].get_width() // 2 + offset_x,
                                      item_center[1] - bag_animation_images[0].get_height() // 2 + offset_y)
