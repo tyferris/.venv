@@ -39,43 +39,48 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Initialize game objects here
 active_item = None
 items = []  # x, y, width, height
-item_positions = [(1230, 50), (1230, 210), (1230, 370), (1230, 530), (1230, 690)]
+item_positions = [(1220, 30), (1225, 185), (1245, 355), (1200, 520), (1235, 630)]
 
-# Load custom images and resize them
+# Load images/animations and resize them
 item_images = []
-for i in range(1, 6):
-    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (90, 112))  # Resize to match original rectangle size
-    item_images.append(img)
+bottle_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/bottle_animation/bottle_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (185, 185))  # Resize to match original rectangle size
+    if i == 0:
+        item_images.append(img)
+    bottle_animation_images.append(img)
+
+paperbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/paperbag_animation/paperbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (185, 185))  # Resize to match original rectangle size
+    if i == 0:
+        item_images.append(img)
+    paperbag_animation_images.append(img)
 
 plasticbag_animation_images = []
 for i in range(0, 61):
     img = pygame.image.load(f"animation_files/plasticbag_animation/plasticbag_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    img = pygame.transform.scale(img, (140, 140))  # Resize to match original rectangle size
+    if i == 0:
+        item_images.append(img)
     plasticbag_animation_images.append(img)
 
 trashbag_animation_images = []
 for i in range(0, 61):
     img = pygame.image.load(f"animation_files/trashbag_animation/trashbag_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    img = pygame.transform.scale(img, (240, 120))  # Resize to match original rectangle size
+    if i == 0:
+        item_images.append(img)
     trashbag_animation_images.append(img)
-
-paperbag_animation_images = []
-for i in range(0, 61):
-    img = pygame.image.load(f"animation_files/paperbag_animation/paperbag_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
-    paperbag_animation_images.append(img)
-
-bottle_animation_images = []
-for i in range(0, 61):
-    img = pygame.image.load(f"animation_files/bottle_animation/bottle_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
-    bottle_animation_images.append(img)
 
 can_animation_images = []
 for i in range(0, 61):
     img = pygame.image.load(f"animation_files/can_animation/can_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    img = pygame.transform.scale(img, (170, 210))  # Resize to match original rectangle size
+    if i == 0:
+        item_images.append(img)
     can_animation_images.append(img)
 
 # Create Rect objects for items and store initial positions
@@ -86,7 +91,7 @@ for i, pos in enumerate(item_positions):
     initial_item_positions.append(pos)  # Store the initial positions
 
 # Background image
-image_background = pygame.image.load("background_files/background_right.png")
+image_background = pygame.image.load("background_files/background_newest.png")
 
 # Function to draw the background
 def draw_background(image):

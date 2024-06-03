@@ -5,12 +5,17 @@ import random
 s = Session().run_as_server()
 s.tempo = 60
 s.synchronization_policy = "no synchronization"
+
 n1 = s.new_part("Cello")
 n2 = s.new_part("Oboe")
 n3 = s.new_part("Flute")
+n4 = s.new_part("Piano")
+
 n1.set_max_pitch_bend(100)
 n2.set_max_pitch_bend(100)
 n3.set_max_pitch_bend(100)
+n4.set_max_pitch_bend(100)
+
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 cresc_small = Envelope.from_levels([0.4,0.6,0.8])
 
@@ -142,6 +147,6 @@ def trashbag_sound (time):
     note = 70 # random.randint(64,71)
     s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
 
-def canbag_sound (time):
+def can_sound (time):
     note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), n4))
