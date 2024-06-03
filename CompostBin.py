@@ -46,15 +46,39 @@ item_positions = [(1230, 50), (1230, 210), (1230, 370), (1230, 530), (1230, 690)
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
-    img = pygame.image.load(f"object_final_files/object-{i}.png").convert_alpha()
+    img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
     img = pygame.transform.scale(img, (96, 120))  # Resize to match original rectangle size
     item_images.append(img)
 
-bag_animation_images = []
-for i in range(1, 65):
-    img = pygame.image.load(f"plasticbaggrain_files/plasticbaggrain_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (1200, 600))  # Resize to match original rectangle size
-    bag_animation_images.append(img)
+plasticbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/plasticbag_animation/plasticbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    plasticbag_animation_images.append(img)
+
+trashbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/trashbag_animation/trashbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    trashbag_animation_images.append(img)
+
+paperbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/paperbag_animation/paperbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    paperbag_animation_images.append(img)
+
+bottle_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/bottle_animation/bottle_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    bottle_animation_images.append(img)
+
+can_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/can_animation/can_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    can_animation_images.append(img)
 
 # Create Rect objects for items and store initial positions
 initial_item_positions = []
@@ -107,7 +131,7 @@ while run:
                     # Reset item to its initial position
                     items[active_item].topleft = initial_item_positions[active_item]
                     # Add a new animation
-                    animations.append(Animation(bag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    animations.append(Animation(plasticbag_animation_images, pos, animation_delay_ms))  # ms delay between frames
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
