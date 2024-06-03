@@ -2,6 +2,8 @@ from scamp import *
 from math import *
 import random
 
+
+# basic set up
 s = Session().run_as_server()
 s.tempo = 60
 s.synchronization_policy = "no synchronization"
@@ -19,6 +21,8 @@ n4.set_max_pitch_bend(100)
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 cresc_small = Envelope.from_levels([0.4,0.6,0.8])
 
+
+# algorithmic music generation functions
 def chrom (start, end, time):
     step = round(((start-end)/time))
     return [start - (step * x) for x in range(0,round(time)+1)]
@@ -109,6 +113,8 @@ def harm_func(note, end):
     #     return random(end+8, end +6)
     return 90
 
+
+# basic helper functions for all music
 def degrade_smooth (start, end, time, function, part):
     time = time/16
     pitches = function(start, end, time)
@@ -132,6 +138,8 @@ def bass_inf (pitch):
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]
 
+
+# object sound functions
 def bottle_sound (time):
     s.fork(degrade_list,args=(82, 62, time, bottle, n3))
 
