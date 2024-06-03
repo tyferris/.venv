@@ -5,8 +5,6 @@ import sys
 
 class Animation:
     def __init__(self, frames, pos, frame_delay):
-        MusicScamp.glass_bottle_sound(round(animation_delay_ms/15.1)) # will need to base off the object later
-        MusicScamp.trash_bag_sound(round(animation_delay_ms/15.1))
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -30,32 +28,55 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 400 # 1 scamp beat ~ 260 frames
+animation_delay_ms = 400
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the bass tone
 
 # Screen bounds
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 1410
+SCREEN_HEIGHT = 852
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Initialize game objects here
 active_item = None
 items = []  # x, y, width, height
-item_positions = [(1000, 35), (1000, 149), (1000, 262), (1000, 376), (1000, 490)]
+item_positions = [(1230, 50), (1230, 210), (1230, 370), (1230, 530), (1230, 690)]
 
 # Load custom images and resize them
 item_images = []
 for i in range(1, 6):
     img = pygame.image.load(f"object_files/object-{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (90, 105))  # Resize to match original rectangle size
+    img = pygame.transform.scale(img, (90, 112))  # Resize to match original rectangle size
     item_images.append(img)
 
-# Load bag animation images
-bag_animation_images = []
-for i in range(1, 65):
-    img = pygame.image.load(f"plasticbaggrain_files/plasticbaggrain_{i}.png").convert_alpha()
-    img = pygame.transform.scale(img, (1402, 546))  # Resize to match original rectangle size
-    bag_animation_images.append(img)
+plasticbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/plasticbag_animation/plasticbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    plasticbag_animation_images.append(img)
+
+trashbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/trashbag_animation/trashbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    trashbag_animation_images.append(img)
+
+paperbag_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/paperbag_animation/paperbag_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    paperbag_animation_images.append(img)
+
+bottle_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/bottle_animation/bottle_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    bottle_animation_images.append(img)
+
+can_animation_images = []
+for i in range(0, 61):
+    img = pygame.image.load(f"animation_files/can_animation/can_{i}.png").convert_alpha()
+    img = pygame.transform.scale(img, (150, 150))  # Resize to match original rectangle size
+    can_animation_images.append(img)
 
 # Create Rect objects for items and store initial positions
 initial_item_positions = []
@@ -107,7 +128,7 @@ while run:
 
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
-                if active_item is not None and active_item == 2:  # Specific check for item 3 (index 2)
+                if active_item is not None:  # Specific check for item 3 (index 2)
                     pos = items[active_item].topleft
                     # Calculate the center position of the item
                     item_center = items[active_item].center
@@ -117,7 +138,18 @@ while run:
                     animation_pos = (item_center[0] - bag_animation_images[0].get_width() // 2 + offset_x,
                                      item_center[1] - bag_animation_images[0].get_height() // 2 + offset_y)
                     # Add a new animation
-                    animations.append(Animation(bag_animation_images, animation_pos, animation_delay_ms))  # ms delay between frames
+                    if active_item == 0:
+                        animations.append(Animation(bottle_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                        MusicScamp.bottle_sound(round(animation_delay_ms))
+                    if active_item == 1:
+                        animations.append(Animation(paperbag_animation_images, pos, animation_delay_ms))
+                    if active_item == 2:
+                        animations.append(Animation(plasticbag_animation_images, pos, animation_delay_ms))
+                        MusicScamp.plasticbag_sound(round(animation_delay_ms))
+                    if active_item == 3:
+                        animations.append(Animation(trashbag_animation_images, pos, animation_delay_ms))
+                    if active_item == 4:
+                        animations.append(Animation(can_animation_images, pos, animation_delay_ms))
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
