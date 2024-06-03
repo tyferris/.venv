@@ -5,7 +5,7 @@ import sys
 class Animation:
     def __init__(self, frames, pos, frame_delay):
         # MusicScamp.glass_bottle_sound(round(animation_delay_ms/15.1)) # will need to base off the object later
-        MusicScamp.trash_bag_sound(round(animation_delay_ms/15.1))
+        # MusicScamp.trash_bag_sound(round(animation_delay_ms/15.1))
         self.frames = frames
         self.pos = pos
         self.frame_delay = frame_delay  # Milliseconds between frames
@@ -30,7 +30,7 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 100 # 1 scamp beat ~ 260 frames
+animation_delay_ms = 400 # 1 scamp beat ~ 260 frames
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the bass tone
 
 # Screen bounds
@@ -126,12 +126,22 @@ while run:
 
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
-                if active_item is not None and active_item == 2:  # Specific check for item 3 (index 2)
+                if active_item is not None:  # Specific check for item 3 (index 2)
                     pos = items[active_item].topleft
                     # Reset item to its initial position
                     items[active_item].topleft = initial_item_positions[active_item]
                     # Add a new animation
-                    animations.append(Animation(plasticbag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    if active_item == 0:
+                        animations.append(Animation(bottle_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    if active_item == 1:
+                        animations.append(Animation(paperbag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    if active_item == 2:
+                        animations.append(Animation(plasticbag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                        MusicScamp.trash_bag_sound(round(animation_delay_ms/15.1))
+                    if active_item == 3:
+                        animations.append(Animation(trashbag_animation_images, pos, animation_delay_ms))  # ms delay between frames
+                    if active_item == 4:
+                        animations.append(Animation(can_animation_images, pos, animation_delay_ms))  # ms delay between frames
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
