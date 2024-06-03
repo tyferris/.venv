@@ -64,7 +64,7 @@ def jump (start, end, time):
     returnable.append(end)
     return returnable
 
-def harm (start, end, time):
+def rand (start, end, time):
     returnable = []
     p = start
     while p != end:
@@ -75,7 +75,6 @@ def harm (start, end, time):
 
 def bottle (start, end, time):
     returnable = []
-    print(start, end)
     p = start
     i = 0
     while i <= start-end-2:
@@ -86,32 +85,51 @@ def bottle (start, end, time):
     returnable.append(end)
     return returnable
 
+def ostinato (start, end, time):
+    # blues_scale = [end, end+3, end+5, end+6, end+7, end+10, end+12, end+15, end+17, end+18, end+19, end+22, end+24]
+    returnable = []
+    # p = start
+    # i = 0
+    # while i <= time*4:
+    #     returnable.append(p)
+    #     p = random.choice(blues_scale)
+    #     if i >= time*3:
+    #         blues_scale.pop()
+    #     i+=1
+    # returnable.append(end)
+    return returnable
+
 def single (start, end, time):
     return ([70])
 
-def harm_func(note, end):
-    print(type(note))
-    print(type(end))
-    # degree = (note-end)%8
-    # print (degree)
-    # return random.randrange()
-    # if degree == 0:
-    #     return end
-    # if degree == 1:
-    #     return end
-    # if degree == 2:
-    #     return random(end+1, end+3)
-    # if degree == 3:
-    #     return end + 5
-    # if degree == 4:
-    #     return random(end+3, end+5)
-    # if degree == 5:
-    #     return end
-    # if degree == 6:
-    #     return end + 5
-    # if degree == 7:
-    #     return random(end+8, end +6)
-    return 90
+def major_harmonic(start, end, time):
+    degree = (start-end)%12
+    returnable = []
+    i = 0
+    note = start
+    while i <= time*2 and note != end:
+        print("degree = ", degree)
+        for x in range (1,3):
+            returnable.append(note)
+            print(x)
+        if degree == 0: # 1st
+            note = random.choice([end, end+7, end+7, end+12, end+12])
+        elif degree == 2: # 2nd
+            note = random.choice([end, end+4, end+4, end+14])
+        elif degree == 4: # 3rd
+            note = random.choice([end+2, end+5, end+5, end+7, end+7])
+        elif degree == 5: # 4th
+            note = random.choice([end+5, end+7, end+7, end+7, end+9])
+        elif degree == 7: # 5th
+            note = random.choice([end, end, end+5, end+7, end+9, end+12])        
+        elif degree == 9: # 6th
+            note = random.choice([end+7, end+7, end+11, end+11, end+11])
+        elif degree == 11: # 7th
+            note = random.choice([end+5, end+12, end+12, end+12])
+        else:
+            note = round(note-1)
+    returnable.append(end)
+    return returnable
 
 def blues (start, end, time):
     blues_scale = [end, end+3, end+5, end+6, end+7, end+10, end+12, end+15, end+17, end+18, end+19, end+22, end+24]
@@ -119,10 +137,11 @@ def blues (start, end, time):
     p = start
     i = 0
     while i <= time*4:
+        if i - time*2 <= 1:
+            blues_scale = [end, end+3, end+5, end+6, end+7, end+10, end+12]
+            print("it ran")
         returnable.append(p)
         p = random.choice(blues_scale)
-        if i >= time*3:
-            blues_scale.pop()
         i+=1
     returnable.append(end)
     return returnable
@@ -158,8 +177,8 @@ def bottle_sound (time):
     s.fork(degrade_list,args=(82, 62, time, bottle, n3))
 
 def paperbag_sound (time):
-    note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+    note = random.randint(64,71)
+    s.fork(degrade_smooth,args=(note, 50, time, major_harmonic, n1))
 
 def plasticbag_sound (time):
     note = 70 # random.randint(64,71)
@@ -170,8 +189,6 @@ def trashbag_sound (time):
     s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
 
 def can_sound (time):
-    note1 = random.choice([77,65,53])
-    note2 = random.choice([74,62,50])
-    s.fork(degrade_list,args=(74, 50, time, blues, n4))
-    s.fork(degrade_list,args=(74, 50, time, blues, n4))
+    s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, n4))
+    s.fork(degrade_list,args=(random.choice([74,62,50]), 50, time, blues, n4))
 
