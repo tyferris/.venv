@@ -6,7 +6,7 @@ import random
 # basic set up
 s = Session().run_as_server()
 s.tempo = 60
-s.synchronization_policy = "no synchronization"
+#s.synchronization_policy = "no synchronization"
 
 n1 = s.new_part("Cello")
 n2 = s.new_part("Oboe")
@@ -113,6 +113,20 @@ def harm_func(note, end):
     #     return random(end+8, end +6)
     return 90
 
+def blues (start, end, time):
+    blues_scale = [end, end+3, end+5, end+6, end+7, end+10, end+12, end+15, end+17, end+18, end+19, end+22, end+24]
+    returnable = []
+    p = start
+    i = 0
+    while i <= time*4:
+        returnable.append(p)
+        p = random.choice(blues_scale)
+        if i >= time*3:
+            blues_scale.pop()
+        i+=1
+    returnable.append(end)
+    return returnable
+
 
 # basic helper functions for all music
 def degrade_smooth (start, end, time, function, part):
@@ -156,5 +170,8 @@ def trashbag_sound (time):
     s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
 
 def can_sound (time):
-    note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), n4))
+    note1 = random.choice([77,65,53])
+    note2 = random.choice([74,62,50])
+    s.fork(degrade_list,args=(74, 50, time, blues, n4))
+    s.fork(degrade_list,args=(74, 50, time, blues, n4))
+
