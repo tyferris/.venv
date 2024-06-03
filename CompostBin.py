@@ -28,7 +28,7 @@ class Animation:
 pygame.init()
 pygame.display.set_caption('Post.com')
 clock = pygame.time.Clock()
-animation_delay_ms = 400
+animation_delay_ms = 100
 MusicScamp.s.fork(MusicScamp.bass_inf,args=[50]) # plays the bass tone
 
 # Screen bounds
@@ -131,16 +131,19 @@ while run:
                     # Add a new animation
                     if active_item == 0:
                         animations.append(Animation(bottle_animation_images, pos, animation_delay_ms))  # ms delay between frames
-                        MusicScamp.bottle_sound(round(animation_delay_ms))
+                        MusicScamp.bottle_sound(animation_delay_ms)
                     if active_item == 1:
                         animations.append(Animation(paperbag_animation_images, pos, animation_delay_ms))
+                        MusicScamp.paperbag_sound(animation_delay_ms)
                     if active_item == 2:
                         animations.append(Animation(plasticbag_animation_images, pos, animation_delay_ms))
-                        MusicScamp.plasticbag_sound(round(animation_delay_ms))
+                        MusicScamp.plasticbag_sound(animation_delay_ms)
                     if active_item == 3:
                         animations.append(Animation(trashbag_animation_images, pos, animation_delay_ms))
+                        MusicScamp.trashbag_sound(animation_delay_ms)
                     if active_item == 4:
                         animations.append(Animation(can_animation_images, pos, animation_delay_ms))
+                        MusicScamp.can_sound(animation_delay_ms)
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
