@@ -3,6 +3,8 @@ from math import *
 import random
 
 s = Session().run_as_server()
+s.tempo = 60
+s.synchronization_policy = "no synchronization"
 n1 = s.new_part("Cello")
 n2 = s.new_part("Oboe")
 n3 = s.new_part("Flute")
@@ -13,11 +15,11 @@ cresc = Envelope.from_levels([0.6,0.8,1.0])
 cresc_small = Envelope.from_levels([0.4,0.6,0.8])
 
 def chrom (start, end, time):
-    step = ((start-end)/time)
-    return [start - (step * x) for x in range(0,time+1)]
+    step = round(((start-end)/time))
+    return [start - (step * x) for x in range(0,round(time)+1)]
 
 def osci (start, end, time):
-    step = ((start-end)/time)*2
+    step = (2*(start-end)/time)
     returnable = [start]
     p = start
     while p > end:
@@ -42,7 +44,7 @@ def tenuto (start, end, time):
     return returnable
 
 def jump (start, end, time):
-    step = ((start-end)/time)*2
+    step = 2*((start-end)/time)
     returnable = []
     p = start
     while p > end:
@@ -62,17 +64,21 @@ def harm (start, end, time):
     returnable.append(end)
     return returnable
 
-def bottle (start, end, time): #start = 62, end = 74
+def bottle (start, end, time):
     returnable = []
     print(start, end)
     p = start
     i = 0
-    while i <= 3*time:
+    while i <= start-end-2:
         returnable.append(p)
-        p = random.randint(end, round(start-(i/6)))
+        returnable.append(p)
+        p = random.randint(end, round(start-(i/2)))
         i+=1
     returnable.append(end)
     return returnable
+
+def single (start, end, time):
+    return ([70])
 
 def harm_func(note, end):
     print(type(note))
@@ -100,14 +106,14 @@ def harm_func(note, end):
 
 def degrade_smooth (start, end, time, function, part):
     time = time/16
-    pitches = function(start, end, time) #allows different functions to work in code
-    print(function, pitches)
+    pitches = function(start, end, time)
+    print(function, pitches, "time = ", time, time/len(pitches))
     part.play_note(pitches, 0.6, time)
 
 def degrade_list (start, end, time, function, part):
     time = time/16
     pitches = function(start, end, time)
-    print(function, pitches)
+    print(function, pitches, "time = ", time, time/len(pitches))
     for pitch in pitches:
         part.play_note(pitch, 0.35, (time/len(pitches)))
 
@@ -118,30 +124,24 @@ def bass_inf (pitch):
     while True:
         bass(pitch,100)
 
-def plasticbag_sound (time):
-    #b = s.new_part("Bird")
-    #s.fork(b.play_note,args=(70, 0.5, time))
-    note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([chrom, jump, osci, tenuto]), random_function([n1,n2,n3]))) # swap between list and smooth / differing functions
-
-def bottle_sound (time):
-    b = s.new_part("Bird")
-    s.fork(degrade_list,args=(82, 62, time, bottle, n3)) # swap between list and smooth / differing functions
-
 def random_function(options): # takes input list
     return options[random.randint(0,len(options)-1)]
 
-# sprint 1 demo notes
-    # need to see audio and visual together in the same scene to figure out the ideas better
-    # audio should be more different
-    # audio should match up with shapes more + vibes (plastic bottle sounds different than bag etc)
-    # music feels ominous but should feel more naturelike, bird/flute, calming, serene
-    # background color should be changed to something that works better with the visuals
-    # work in large rough strokes to make it easy to show off
+def bottle_sound (time):
+    s.fork(degrade_list,args=(82, 62, time, bottle, n3))
 
-# spring 2 demo notes
-    # ?
-    # ?
-    # ?
-    # ?
-    # ?
+def paperbag_sound (time):
+    note = 70 # random.randint(64,71)
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+
+def plasticbag_sound (time):
+    note = 70 # random.randint(64,71)
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+
+def trashbag_sound (time):
+    note = 70 # random.randint(64,71)
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+
+def canbag_sound (time):
+    note = 70 # random.randint(64,71)
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
