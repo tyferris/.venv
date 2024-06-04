@@ -6,17 +6,18 @@ import random
 # basic set up
 s = Session().run_as_server()
 s.tempo = 60
-#s.synchronization_policy = "no synchronization"
 
-n1 = s.new_part("Cello")
-n2 = s.new_part("Oboe")
-n3 = s.new_part("Flute")
-n4 = s.new_part("Piano")
+cello = s.new_part("Cello")
+oboe = s.new_part("Oboe")
+flute = s.new_part("Flute")
+harp = s.new_part("Harp")
+guitar = s.new_part("Guitar")
 
-n1.set_max_pitch_bend(100)
-n2.set_max_pitch_bend(100)
-n3.set_max_pitch_bend(100)
-n4.set_max_pitch_bend(100)
+cello.set_max_pitch_bend(100)
+oboe.set_max_pitch_bend(100)
+flute.set_max_pitch_bend(100)
+harp.set_max_pitch_bend(100)
+guitar.set_max_pitch_bend(100)
 
 cresc = Envelope.from_levels([0.6,0.8,1.0])
 cresc_small = Envelope.from_levels([0.4,0.6,0.8])
@@ -77,7 +78,7 @@ def bottle (start, end, time):
     returnable = []
     p = start
     i = 0
-    while i <= start-end-2:
+    while i <= 2*(start-end-2):
         returnable.append(p)
         returnable.append(p)
         p = random.randint(end, round(start-(i/2)))
@@ -194,7 +195,7 @@ def degrade_list (start, end, time, function, part):
         part.play_note(pitch, 0.35, (time/len(pitches)))
 
 def bass (pitch, time):
-    n1.play_note(pitch, cresc_small, time)
+    cello.play_note(pitch, cresc_small, time)
 
 def bass_inf (pitch):
     while True:
@@ -206,22 +207,21 @@ def random_function(options): # takes input list
 
 # object sound functions
 def bottle_sound (time):
-    s.fork(degrade_list,args=(82, 62, time, bottle, n3))
+    s.fork(degrade_list,args=(86, 62, time, bottle, harp))
 
 def paperbag_sound (time):
     note = random.randint(62,74)
-    s.fork(degrade_list,args=(note, 50, time, major_harmonic, n1))
+    s.fork(degrade_list,args=(note, 50, time, major_harmonic, cello))
 
 def plasticbag_sound (time):
-    note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+    note = random.randint(58,68)
+    s.fork(degrade_smooth,args=(note, 50, time, random_function([tenuto]), cello))
 
 def trashbag_sound (time):
     note = random.randint(62,74)
-    s.fork(degrade_list,args=(53, 50, time, single, n1))
-    s.fork(degrade_list,args=(note, 50, time, minor_harmonic, n2))
+    s.fork(degrade_list,args=(53, 50, time, single, cello))
+    s.fork(degrade_list,args=(note, 50, time, minor_harmonic, oboe))
 
 def can_sound (time):
-    s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, n4))
-    s.fork(degrade_list,args=(random.choice([74,62,50]), 50, time, blues, n4))
-
+    s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, flute))
+    s.fork(degrade_list,args=(random.choice([74,62,50]), 50, time, blues, flute))
