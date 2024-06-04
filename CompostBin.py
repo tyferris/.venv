@@ -152,7 +152,7 @@ while run:
                         MusicScamp.trashbag_sound(animation_delay_ms)
                     if active_item == 4:
                         animations.append(Animation(can_animation_images, pos, animation_delay_ms))
-                        MusicScamp.can_sound(animation_delay_ms)
+                        MusicScamp.canbag_sound(animation_delay_ms)
                 active_item = None  # No more click, no more active
 
         if event.type == pygame.MOUSEMOTION:  # If mouse moves...
