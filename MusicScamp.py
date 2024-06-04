@@ -103,28 +103,59 @@ def single (start, end, time):
     return ([70])
 
 def major_harmonic(start, end, time):
-    degree = (start-end)%12
     returnable = []
     i = 0
     note = start
-    while i <= time*2 and note != end:
-        print("degree = ", degree)
-        for x in range (1,3):
-            returnable.append(note)
-            print(x)
+    while i <= time:
+        degree = (note-end)%12
+        returnable.append(note)
+        i+=1
         if degree == 0: # 1st
+            returnable.append(note)
             note = random.choice([end, end+7, end+7, end+12, end+12])
         elif degree == 2: # 2nd
             note = random.choice([end, end+4, end+4, end+14])
         elif degree == 4: # 3rd
             note = random.choice([end+2, end+5, end+5, end+7, end+7])
         elif degree == 5: # 4th
+            returnable.append(note)
             note = random.choice([end+5, end+7, end+7, end+7, end+9])
         elif degree == 7: # 5th
+            returnable.append(note)
             note = random.choice([end, end, end+5, end+7, end+9, end+12])        
         elif degree == 9: # 6th
             note = random.choice([end+7, end+7, end+11, end+11, end+11])
         elif degree == 11: # 7th
+            note = random.choice([end+5, end+12, end+12, end+12])
+        else:
+            note = round(note-1)
+    returnable.append(end)
+    return returnable
+
+def minor_harmonic(start, end, time):
+    returnable = []
+    i = 0
+    note = start
+    while i <= time:
+        degree = (note-end)%12
+        returnable.append(note)
+        i+=1
+        if degree == 0: # 1st
+            returnable.append(note)
+            note = random.choice([end, end+7, end+7, end+12, end+12])
+        elif degree == 2: # 2nd
+            note = random.choice([end, end+3, end+3, end+14])
+        elif degree == 3: # 3rd
+            note = random.choice([end+2, end+5, end+5, end+7, end+7])
+        elif degree == 5: # 4th
+            returnable.append(note)
+            note = random.choice([end+5, end+7, end+7, end+7, end+8])
+        elif degree == 7: # 5th
+            returnable.append(note)
+            note = random.choice([end, end, end+5, end+7, end+8, end+12])        
+        elif degree == 8: # 6th
+            note = random.choice([end+7, end+7, end+10, end+10, end+10])
+        elif degree == 10: # 7th
             note = random.choice([end+5, end+12, end+12, end+12])
         else:
             note = round(note-1)
@@ -137,9 +168,10 @@ def blues (start, end, time):
     p = start
     i = 0
     while i <= time*4:
-        if i - time*2 <= 1:
+        if abs(time*2-i) <= 1:
             blues_scale = [end, end+3, end+5, end+6, end+7, end+10, end+12]
-            print("it ran")
+        if abs(time*3-i) <= 1:
+            blues_scale = [end, end+3, end+5, end+6, end+7]
         returnable.append(p)
         p = random.choice(blues_scale)
         i+=1
@@ -177,16 +209,17 @@ def bottle_sound (time):
     s.fork(degrade_list,args=(82, 62, time, bottle, n3))
 
 def paperbag_sound (time):
-    note = random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, major_harmonic, n1))
+    note = random.randint(62,74)
+    s.fork(degrade_list,args=(note, 50, time, major_harmonic, n1))
 
 def plasticbag_sound (time):
     note = 70 # random.randint(64,71)
     s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
 
 def trashbag_sound (time):
-    note = 70 # random.randint(64,71)
-    s.fork(degrade_smooth,args=(note, 50, time, random_function([osci, tenuto, jump]), random_function([n1,n2,n3])))
+    note = random.randint(62,74)
+    s.fork(degrade_list,args=(53, 50, time, single, n1))
+    s.fork(degrade_list,args=(note, 50, time, minor_harmonic, n2))
 
 def can_sound (time):
     s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, n4))
