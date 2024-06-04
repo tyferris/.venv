@@ -78,11 +78,14 @@ def bottle (start, end, time):
     returnable = []
     p = start
     i = 0
-    while i <= 2*(start-end-2):
+    while i <= 2*(start-end-1):
         returnable.append(p)
         returnable.append(p)
         p = random.randint(end, round(start-(i/2)))
         i+=1
+    returnable.append(end)
+    returnable.append(end)
+    returnable.append(end)
     returnable.append(end)
     return returnable
 
@@ -177,6 +180,9 @@ def blues (start, end, time):
         p = random.choice(blues_scale)
         i+=1
     returnable.append(end)
+    returnable.append(end)
+    returnable.append(end)
+    returnable.append(end)
     return returnable
 
 
@@ -211,7 +217,8 @@ def bottle_sound (time):
 
 def paperbag_sound (time):
     note = random.randint(62,74)
-    s.fork(degrade_list,args=(note, 50, time, major_harmonic, cello))
+    s.fork(degrade_list,args=(45, 50, time, single, cello))
+    s.fork(degrade_list,args=(note, 50, time, major_harmonic, oboe))
 
 def plasticbag_sound (time):
     note = random.randint(58,68)
@@ -219,9 +226,9 @@ def plasticbag_sound (time):
 
 def trashbag_sound (time):
     note = random.randint(62,74)
-    s.fork(degrade_list,args=(53, 50, time, single, cello))
+    s.fork(degrade_list,args=(42, 50, time, single, cello))
     s.fork(degrade_list,args=(note, 50, time, minor_harmonic, oboe))
 
 def can_sound (time):
-    s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, flute))
-    s.fork(degrade_list,args=(random.choice([74,62,50]), 50, time, blues, flute))
+    s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, guitar))
+    s.fork(degrade_list,args=(random.choice([74,62,50]), 50, time, blues, guitar))
