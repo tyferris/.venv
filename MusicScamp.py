@@ -227,7 +227,7 @@ def plasticbag_sound (time):
 def trashbag_sound (time):
     note = random.randint(62,74)
     s.fork(degrade_list,args=(42, 50, time, single, cello))
-    s.fork(degrade_list,args=(note, 50, time, minor_harmonic, oboe))
+    s.fork(degrade_smooth,args=(note, 50, time, minor_harmonic, oboe))
 
 def can_sound (time):
     s.fork(degrade_list,args=(random.choice([77,65,53]), 50, time, blues, guitar))
